@@ -98,7 +98,7 @@ define :opsworks_deploy do
       before_migrate do
         link_tempfiles_to_current_release
 
-        if deploy[:application_type] == 'rails'
+        if node[:custom_layer][node[:opsworks][:instance][:layers].first][:layer_type] == 'rails-app' && node[:custom_layer][node[:opsworks][:instance][:layers].first][:apps].include?(application)
           if deploy[:auto_bundle_on_deploy]
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
