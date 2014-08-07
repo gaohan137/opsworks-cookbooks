@@ -2,7 +2,7 @@ include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
 
-  if deploy[:application_type] != 'rails'
+  if !node[:custom_layer][node[:opsworks][:instance][:layers].first][:apps].include?(application)
     Chef::Log.debug("Skipping deploy::rails application #{application} as it is not a Rails app")
     next
   end
