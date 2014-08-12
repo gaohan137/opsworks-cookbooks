@@ -1,4 +1,6 @@
-if node[:custom_layer][node[:opsworks][:instance][:layers].first][:opsworks_bundler][:manage_package]
+is_built_in =  ['php-app', 'rails-app', 'nodejs-app', 'java-app', 'db-master', 'lb', 'web', 'memcached', 'monitoring-master', 'aws-flow-ruby'].include?(node[:opsworks][:instance][:layers].first)
+
+if (is_built_in ? node[:opsworks_bundler][:manage_package] : node[:custom_layer][node[:opsworks][:instance][:layers].first][:opsworks_bundler][:manage_package])
   gem_package "Installing Bundler #{node[:opsworks_bundler][:version]}" do
     gem_binary node[:dependencies][:gem_binary]
     retries 2
